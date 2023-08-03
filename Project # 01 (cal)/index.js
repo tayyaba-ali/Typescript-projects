@@ -28,17 +28,14 @@ async function welcome() {
 DEPLOYED BY TAYYABA
 
 `);
-    askQuestions();
 }
-welcome();
 async function askQuestions() {
-    inquirer
-        .prompt([
+    return inquirer.prompt([
         {
             type: 'list',
             name: 'operator',
             message: 'Select the operator',
-            choices: ['Addition', 'Subraction', 'Multiplication', 'Division'],
+            choices: ['Addition', 'Subtraction', 'Multiplication', 'Division'],
         },
         {
             type: 'number',
@@ -50,20 +47,37 @@ async function askQuestions() {
             name: 'num2',
             message: 'Enter num 2',
         },
-    ])
-        .then((answers) => {
+    ]);
+}
+async function startAgain() {
+    let again;
+    do {
+        const answers = await askQuestions();
         let { num1, num2, operator } = answers;
-        if (operator === "Addition") {
+        if (operator === 'Addition') {
             console.log(`${num1}+${num2}=${num1 + num2}`);
         }
-        else if (operator === "Subtraction") {
+        else if (operator === 'Subtraction') {
             console.log(`${num1}-${num2}=${num1 - num2}`);
         }
-        else if (operator === "Multiplication") {
+        else if (operator === 'Multiplication') {
             console.log(`${num1}*${num2}=${num1 * num2}`);
         }
         else {
             console.log(`${num1}/${num2}=${num1 / num2}`);
         }
-    });
+        again = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'restart',
+                message: 'Do you want to continue ? Press Y or N',
+            },
+        ]);
+    } while (again.restart.toLowerCase() === 'y');
 }
+async function main() {
+    welcome();
+    await sleep(); // Wait for the welcome message to be displayed before asking the first question
+    await startAgain();
+}
+main();
