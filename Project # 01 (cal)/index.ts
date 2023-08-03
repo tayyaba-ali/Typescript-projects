@@ -33,14 +33,15 @@ async function welcome() {
 DEPLOYED BY TAYYABA
 
 `);
-askQuestions();
+// askQuestions();
+	
 
 }
 
 welcome();
 
 async function askQuestions() {
-	inquirer
+	await inquirer
 		.prompt([
 			{
 				type: 'list',
@@ -81,3 +82,20 @@ async function askQuestions() {
             
 		});
 }
+
+async function startAgain() {
+	do {
+		await  askQuestions()
+		var again = await inquirer.prompt(
+			[{
+				type: "input",
+				name: "restart",
+				message:"Do you want to continue ? Press Y or N"
+			}]
+		)
+	}
+	while (again.restart.toLowerCase() === "y") {
+		
+	}
+}
+startAgain()
