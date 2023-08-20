@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import inquirer from 'inquirer';
+import chalk from 'chalk';
 import chalkAnimation from 'chalk-animation';
 function sleep() {
     return new Promise((res) => {
@@ -29,13 +30,15 @@ DEPLOYED BY TAYYABA
 
 `);
 }
+await welcome();
 async function askQuestions() {
-    return inquirer.prompt([
+    await inquirer
+        .prompt([
         {
             type: 'list',
             name: 'operator',
             message: 'Select the operator',
-            choices: ['Addition', 'Subtraction', 'Multiplication', 'Division'],
+            choices: ['Addition', 'Subraction', 'Multiplication', 'Division'],
         },
         {
             type: 'number',
@@ -47,26 +50,27 @@ async function askQuestions() {
             name: 'num2',
             message: 'Enter num 2',
         },
-    ]);
-}
-async function startAgain() {
-    let again;
-    do {
-        const answers = await askQuestions();
+    ])
+        .then((answers) => {
         let { num1, num2, operator } = answers;
         if (operator === 'Addition') {
-            console.log(`${num1}+${num2}=${num1 + num2}`);
+            console.log(chalk.green(`${num1}+${num2}=${num1 + num2}`));
         }
         else if (operator === 'Subtraction') {
-            console.log(`${num1}-${num2}=${num1 - num2}`);
+            console.log(chalk.green(`${num1}-${num2}=${num1 - num2}`));
         }
         else if (operator === 'Multiplication') {
-            console.log(`${num1}*${num2}=${num1 * num2}`);
+            console.log(chalk.green(`${num1}*${num2}=${num1 * num2}`));
         }
         else {
-            console.log(`${num1}/${num2}=${num1 / num2}`);
+            console.log(chalk.green(`${num1}/${num2}=${num1 / num2}`));
         }
-        again = await inquirer.prompt([
+    });
+}
+async function startAgain() {
+    do {
+        await askQuestions();
+        var again = await inquirer.prompt([
             {
                 type: 'input',
                 name: 'restart',
@@ -74,10 +78,7 @@ async function startAgain() {
             },
         ]);
     } while (again.restart.toLowerCase() === 'y');
+    {
+    }
 }
-async function main() {
-    welcome();
-    await sleep(); // Wait for the welcome message to be displayed before asking the first question
-    await startAgain();
-}
-main();
+startAgain();

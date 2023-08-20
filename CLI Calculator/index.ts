@@ -33,69 +33,53 @@ async function welcome() {
 DEPLOYED BY TAYYABA
 
 `);
-// askQuestions();
-	
-
 }
 
-welcome();
+await welcome();
 
 async function askQuestions() {
-	await inquirer
-		.prompt([
-			{
-				type: 'list',
-				name: 'operator',
-				message: 'Select the operator',
-				choices: ['Addition', 'Subraction', 'Multiplication', 'Division'],
-			},
-			{
-				type: 'number',
-				name: 'num1',
-				message: 'Enter num 1',
-			},
-			{
-				type: 'number',
-				name: 'num2',
-				message: 'Enter num 2',
-			},
-		])
-		.then((answers) => {
-			let { num1, num2, operator } = answers;
-			
+	var { operator, num1, num2 } = await inquirer.prompt([
+		{
+			type: 'list',
+			name: 'operator',
+			message: 'Select the operator',
+			choices: ['Addition', 'Subraction', 'Multiplication', 'Division'],
+		},
+		{
+			type: 'number',
+			name: 'num1',
+			message: 'Enter num 1',
+		},
+		{
+			type: 'number',
+			name: 'num2',
+			message: 'Enter num 2',
+		},
+	]);
 
-            if(operator==="Addition"){
-                console.log(`${num1}+${num2}=${num1+num2}`);
-                
-            }
-            else if(operator==="Subtraction"){
-                console.log(`${num1}-${num2}=${num1-num2}`);
-                
-            }
-            else if(operator==="Multiplication"){
-                console.log(`${num1}*${num2}=${num1*num2}`);
-                
-            }
-            else{
-                 console.log(`${num1}/${num2}=${num1/num2}`);
-            }
-            
-		});
+	if (operator === 'Addition') {
+		console.log(chalk.green(`${num1}+${num2}=${num1 + num2}`));
+	} else if (operator === 'Subtraction') {
+		console.log(chalk.green(`${num1}-${num2}=${num1 - num2}`));
+	} else if (operator === 'Multiplication') {
+		console.log(chalk.green(`${num1}*${num2}=${num1 * num2}`));
+	} else {
+		console.log(chalk.green(`${num1}/${num2}=${num1 / num2}`));
+	}
 }
 
 async function startAgain() {
 	do {
-		await  askQuestions()
-		var again = await inquirer.prompt(
-			[{
-				type: "input",
-				name: "restart",
-				message:"Do you want to continue ? Press Y or N"
-			}]
-		)
-	}
-	while (again.restart.toLowerCase() === "y") {
-		
+		await askQuestions();
+		var again = await inquirer.prompt([
+			{
+				type: 'input',
+				name: 'restart',
+				message: 'Do you want to continue ? Press Y or N',
+			},
+		]);
+	} while (again.restart.toLowerCase() === 'y');
+	{
 	}
 }
-startAgain()
+startAgain();
